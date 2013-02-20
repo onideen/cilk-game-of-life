@@ -36,9 +36,9 @@ void genlife(int *a, unsigned int n){
 void readlife(int *a, unsigned int n){
 /*	
 	FILE *file;
-	int i;
+	int i,j;
 	char *line;
-	line = (char *)malloc(2*n);
+	line = (char *)malloc(2*n+2);
 
 	file = fopen("input","rt");
 
@@ -47,9 +47,9 @@ void readlife(int *a, unsigned int n){
 		exit(-1);
 	}
 	for(i = 0; i < n; i++){
-		fgets(line, 2*n-1, file);
+		fgets(line, 2*n+2, file);
 		for(j =0; j < n; j++){
-			line[j ]
+			a[j +i*n] = atoi(&line[2 * j]);
 		}
 	}
 	*/
@@ -57,38 +57,47 @@ void readlife(int *a, unsigned int n){
 
 int countNeighbours(int *a, unsigned int n, int i, int j){
 	int neighbours = 0;
+<<<<<<< HEAD
 	printf("%d\n", a[i*n + j]);
 
 	if(a[(i*n)%n + (j-1)%n] == 1){
 		neighbours++;
 	}
 	if(a[(i*n)%n + (j+1)%n] == 1){
+=======
+	if(a[(i)*n + (j-1+n)%n] == 1){
+		neighbours++;
+	}
+	
+	if(a[(i)*n + (j+1)%n] == 1){
+>>>>>>> f3e8cde6815f9ec5b177035aceb0ef9202036c8e
 		neighbours++;
 	}
 
-	if(a[((i-1)*n)%n + j%n] == 1){
+	if(a[((i+1+n)%n)*n + j%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i+1)*n)%n + j%n] == 1){
+	if(a[((i-1+n)%n)*n + j%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i+1)*n)%n + (j-1)%n] == 1){
+	if(a[((i+1+n)%n)*n + (j-1+n)%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i+1)*n)%n + (j+1)%n] == 1){
+	if(a[((i+1+n)%n)*n + (j+1)%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i-1)*n)%n + (j-1)%n] == 1){
+	if(a[((i-1+n)%n)*n + (j-1+n)%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i-1)*n)%n + (j+1)%n] == 1){
+	if(a[((i-1+n)%n)*n + (j+1)%n] == 1){
 		neighbours++;
 	}
+
 
 	return neighbours;
 }
@@ -120,9 +129,8 @@ void life(int *a, unsigned int n, unsigned int iter){
 
 				}else if(countNeighbours(a,n,i,j) == 3){
 					b[i*n+j] = 1;
-				}else if(a[i*n+j]==1 && countNeighbours(a,n,i,j) ==2){
-					b[i*n +j] = 1;
-				}
+				}else if(countNeighbours(a,n,i,j) ==2){
+					b[i*n +j] = a[i*n+j];
 
 			}
 		}
@@ -133,8 +141,6 @@ void life(int *a, unsigned int n, unsigned int iter){
 		memcpy(a,b,sizeof(int)*n*n);
 		printGame(n,a);
 	}
-
-
 
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
 	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
