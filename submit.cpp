@@ -64,26 +64,31 @@ int countNeighbours(int *a, unsigned int n){
 
 //Life function
 void life(int *a, unsigned int n, unsigned int iter){
-	int *b;
-	b = malloc(sizeof(int)*n*n);
+	
+	for (int it = 0; it < iter; ++it) {
+		int *b;
+		b = malloc(sizeof(int)*n*n);
 
-	for (int i = 0; i < count; ++i)
-	{
-		for (int j = 0; j < count; ++j){
-			if(countNeighbours(a,n) > 3){
-				b[i*n+j] = 0;
-			}else if(countNeighbours(a,n) < 2){
-				b[i*n+j] = 0;
+		cilk_for (int i = 0; i < count; ++i)
+		{
+			cilk_for (int j = 0; j < count; ++j){
+				if(countNeighbours(a,n) > 3){
+					b[i*n+j] = 0;
+				}else if(countNeighbours(a,n) < 2){
+					b[i*n+j] = 0;
 
-			}else if(countNeighbours(a,n) == 3){
-				b[i*n+j] = 1;
-			}else if(a[i*n+j]==1 && countNeighbours(a,n) ==2){
-				b[i*n +j] = 1;
+				}else if(countNeighbours(a,n) == 3){
+					b[i*n+j] = 1;
+				}else if(a[i*n+j]==1 && countNeighbours(a,n) ==2){
+					b[i*n +j] = 1;
+				}
 			}
 		}
+
+		memcpy(a,b,sizeof(int)*n*n);
 	}
 
-	memcpy(a,b,sizeof(int)*n*n);
+
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
 	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
 	// 20 ... 50. The countlive function is defined in life.cpp, which you can use. Note that you can
