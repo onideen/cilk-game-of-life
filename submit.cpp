@@ -114,26 +114,26 @@ void life(int *a, unsigned int n, unsigned int iter){
 
 		cilk_for (int i = 0; i < iter; ++i) {
 			cilk_for (int j = 0; j < iter; ++j){
-				if(countNeighbours(a,n,i,j) > 3){
+				unsigned int numberOfNeighbours = countNeighbours(a,n,i,j);
+
+				if(numberOfNeighbours > 3){
 					b[i*n+j] = 0;
-				}else if(countNeighbours(a,n,i,j) < 2){
+				}else if(numberOfNeighbours < 2){
 					b[i*n+j] = 0;
 
-				}else if(countNeighbours(a,n,i,j) == 3){
+				}else if(numberOfNeighbours == 3){
 					b[i*n+j] = 1;
-				}else if(countNeighbours(a,n,i,j) ==2){
+				}else if(numberOfNeighbours ==2){
 					b[i*n +j] = a[i*n+j];
 
+				}
 			}
+
+			printGame(n,a);
+			memcpy(a,b,sizeof(int)*n*n);
+			printGame(n,a);
 		}
-
-		memcpy(a,b,sizeof(int)*n*n);
-
-		printGame(n,a);
-		memcpy(a,b,sizeof(int)*n*n);
-		printGame(n,a);
 	}
-
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
 	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
 	// 20 ... 50. The countlive function is defined in life.cpp, which you can use. Note that you can
