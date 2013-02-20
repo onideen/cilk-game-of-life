@@ -8,12 +8,24 @@ Team member 2 : Jane Doe
 
 //Generate the life matrix any way you want. We would highly recommend that you print the generated
 //matrix into a file, so that you can share it with other teams for checking correctness.
-void genlife(int *a, unsigned int n){
-	//int i, j;	
-
+void printGame(unsigned int size, int* a){
 	for (int i = 0; i < size; ++i)
 	{
 		for (int j = 0; j < size; ++j)
+		{
+			printf("%i ", a[i* size + j]);
+		}
+		printf("\n");
+	}
+}
+
+
+void genlife(int *a, unsigned int n){
+	//int i, j;	
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
 		{
 			a[i*n +j] = 1;
 		}
@@ -22,10 +34,27 @@ void genlife(int *a, unsigned int n){
 
 //Read the life matrix from a file
 void readlife(int *a, unsigned int n){
+	FILE *file;
+	int i;
+	char *line;
+	line = (char *)malloc(2*n);
 
+	file = fopen("input","rt");
+
+	if(file == NULL){
+		printf("Input file not found\n");
+		exit(-1);
+	}
+
+	for(i = 0; i < n; i++){
+		fgets(line, 2*n-1, file);
+		for(j =0; j < n; j++){
+			line[j ]
+		}
+	}
 }
 
-int countNeighbours(int *a, unsigned int n){
+int countNeighbours(int *a, unsigned int n, int i, int j){
 	int neighbours = 0;
 	if(a[(i*n)%n + (j-1)%n] == 1){
 		neighbours++;
@@ -65,25 +94,28 @@ int countNeighbours(int *a, unsigned int n){
 //Life function
 void life(int *a, unsigned int n, unsigned int iter){
 	int *b;
-	b = malloc(sizeof(int)*n*n);
+	b = (int *)malloc(sizeof(int)*n*n);
 
-	for (int i = 0; i < count; ++i)
+
+	for (int i = 0; i < n; ++i)
 	{
-		for (int j = 0; j < count; ++j){
-			if(countNeighbours(a,n) > 3){
+		for (int j = 0; j < n; ++j){
+			if(countNeighbours(a,n,i,j) > 3){
 				b[i*n+j] = 0;
-			}else if(countNeighbours(a,n) < 2){
+			}else if(countNeighbours(a,n,i,j) < 2){
 				b[i*n+j] = 0;
 
-			}else if(countNeighbours(a,n) == 3){
+			}else if(countNeighbours(a,n,i,j) == 3){
 				b[i*n+j] = 1;
-			}else if(a[i*n+j]==1 && countNeighbours(a,n) ==2){
+			}else if(a[i*n+j]==1 && countNeighbours(a,n,i,j) ==2){
 				b[i*n +j] = 1;
 			}
 		}
 	}
 
+	printGame(n,a);
 	memcpy(a,b,sizeof(int)*n*n);
+	printGame(n,a);
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
 	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
 	// 20 ... 50. The countlive function is defined in life.cpp, which you can use. Note that you can
@@ -106,3 +138,4 @@ void life(int *a, unsigned int n, unsigned int iter){
 	//		
 	//	}
 }
+
