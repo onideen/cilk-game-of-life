@@ -96,27 +96,29 @@ int countNeighbours(int *a, unsigned int n, int i, int j){
 void life(int *a, unsigned int n, unsigned int iter){
 	int *b;
 	b = (int *)malloc(sizeof(int)*n*n);
+	printGame(n,a);
 
-	for (int i = 0; i < n; ++i)
-	{
-		for (int j = 0; j < n; ++j){
-			if(countNeighbours(a,n,i,j) > 3){
-				b[i*n+j] = 0;
-			}else if(countNeighbours(a,n,i,j) < 2){
-				b[i*n+j] = 0;
+	for (int k = 0; k < iter; ++k){
+		for (int i = 0; i < n; ++i)	{
+			for (int j = 0; j < n; ++j){
+				if(countNeighbours(a,n,i,j) > 3){
+					b[i*n+j] = 0;
+				}else if(countNeighbours(a,n,i,j) < 2){
+					b[i*n+j] = 0;
 
-			}else if(countNeighbours(a,n,i,j) == 3){
-				b[i*n+j] = 1;
-			}else if(countNeighbours(a,n,i,j) ==2){
-				b[i*n +j] = a[i*n+j];
+				}else if(countNeighbours(a,n,i,j) == 3){
+					b[i*n+j] = 1;
+				}else if(countNeighbours(a,n,i,j) ==2){
+					b[i*n +j] = a[i*n+j];
+				}
 			}
 		}
+		memcpy(a,b,sizeof(int)*n*n);
+		printf("\n");
+		printGame(n,a);
+			
 	}
 
-	printGame(n,a);
-	memcpy(a,b,sizeof(int)*n*n);
-	printf("\n");
-	printGame(n,b);
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
 	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
 	// 20 ... 50. The countlive function is defined in life.cpp, which you can use. Note that you can
