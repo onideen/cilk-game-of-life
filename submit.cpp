@@ -35,9 +35,9 @@ void genlife(int *a, unsigned int n){
 //Read the life matrix from a file
 void readlife(int *a, unsigned int n){
 	FILE *file;
-	int i;
+	int i,j;
 	char *line;
-	line = (char *)malloc(2*n);
+	line = (char *)malloc(2*n+2);
 
 	file = fopen("input","rt");
 
@@ -47,46 +47,47 @@ void readlife(int *a, unsigned int n){
 	}
 
 	for(i = 0; i < n; i++){
-		fgets(line, 2*n-1, file);
+		fgets(line, 2*n+2, file);
 		for(j =0; j < n; j++){
-			line[j ]
+			a[j +i*n] = atoi(&line[2 * j]);
 		}
 	}
 }
 
 int countNeighbours(int *a, unsigned int n, int i, int j){
 	int neighbours = 0;
-	if(a[(i*n)%n + (j-1)%n] == 1){
+	if(a[(i)*n + (j-1+n)%n] == 1){
 		neighbours++;
 	}
 	
-	if(a[(i*n)%n + (j+1)%n] == 1){
+	if(a[(i)*n + (j+1)%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i-1)*n)%n + j%n] == 1){
+	if(a[((i+1+n)%n)*n + j%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i+1)*n)%n + j%n] == 1){
+	if(a[((i-1+n)%n)*n + j%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i+1)*n)%n + (j-1)%n] == 1){
+	if(a[((i+1+n)%n)*n + (j-1+n)%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i+1)*n)%n + (j+1)%n] == 1){
+	if(a[((i+1+n)%n)*n + (j+1)%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i-1)*n)%n + (j-1)%n] == 1){
+	if(a[((i-1+n)%n)*n + (j-1+n)%n] == 1){
 		neighbours++;
 	}
 
-	if(a[((i-1)*n)%n + (j+1)%n] == 1){
+	if(a[((i-1+n)%n)*n + (j+1)%n] == 1){
 		neighbours++;
 	}
+
 
 	return neighbours;
 }
@@ -95,7 +96,6 @@ int countNeighbours(int *a, unsigned int n, int i, int j){
 void life(int *a, unsigned int n, unsigned int iter){
 	int *b;
 	b = (int *)malloc(sizeof(int)*n*n);
-
 
 	for (int i = 0; i < n; ++i)
 	{
@@ -107,15 +107,16 @@ void life(int *a, unsigned int n, unsigned int iter){
 
 			}else if(countNeighbours(a,n,i,j) == 3){
 				b[i*n+j] = 1;
-			}else if(a[i*n+j]==1 && countNeighbours(a,n,i,j) ==2){
-				b[i*n +j] = 1;
+			}else if(countNeighbours(a,n,i,j) ==2){
+				b[i*n +j] = a[i*n+j];
 			}
 		}
 	}
 
 	printGame(n,a);
 	memcpy(a,b,sizeof(int)*n*n);
-	printGame(n,a);
+	printf("\n");
+	printGame(n,b);
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
 	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
 	// 20 ... 50. The countlive function is defined in life.cpp, which you can use. Note that you can
