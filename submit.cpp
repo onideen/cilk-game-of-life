@@ -100,20 +100,22 @@ void life(int *a, unsigned int n, unsigned int iter){
 	unsigned int lastVCell = 0;
 	unsigned int firstHCell = n;
 	unsigned int lastHCell = 0; 
+	int *b;
+	unsigned int initi, initj, endi, endj;
 
+	b = (int *)malloc(sizeof(int)*n*n);
+
+	printGame(n,a);
 
 	for (int it = 0; it < iter; ++it) {
-		int *b;
-		unsigned int initi, initj, endi, endj;
 
 		if(it == 0) {
 			initj;
 		}
 
-		b = (int *)malloc(sizeof(int)*n*n);
 
-		cilk_for (int i = 0; i < iter; ++i) {
-			cilk_for (int j = 0; j < iter; ++j){
+		cilk_for (int i = 0; i < n; ++i) {
+			cilk_for (int j = 0; j < n; ++j){
 				unsigned int numberOfNeighbours = countNeighbours(a,n,i,j);
 
 				if(numberOfNeighbours > 3){
@@ -129,10 +131,11 @@ void life(int *a, unsigned int n, unsigned int iter){
 				}
 			}
 
-			printGame(n,a);
-			memcpy(a,b,sizeof(int)*n*n);
-			printGame(n,a);
 		}
+
+		memcpy(a,b,sizeof(int)*n*n);
+		printGame(n,a);
+
 	}
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
 	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
