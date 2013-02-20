@@ -57,20 +57,12 @@ void readlife(int *a, unsigned int n){
 
 int countNeighbours(int *a, unsigned int n, int i, int j){
 	int neighbours = 0;
-<<<<<<< HEAD
-	printf("%d\n", a[i*n + j]);
 
-	if(a[(i*n)%n + (j-1)%n] == 1){
-		neighbours++;
-	}
-	if(a[(i*n)%n + (j+1)%n] == 1){
-=======
 	if(a[(i)*n + (j-1+n)%n] == 1){
 		neighbours++;
 	}
 	
 	if(a[(i)*n + (j+1)%n] == 1){
->>>>>>> f3e8cde6815f9ec5b177035aceb0ef9202036c8e
 		neighbours++;
 	}
 
