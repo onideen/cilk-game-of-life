@@ -21,9 +21,13 @@ void printGame(unsigned int n, int* a){
 	}
 }
 
-int getElement(int x, int y, int age){
-	
+int getElement(int x, int y, int age){	
 	return array[y*size+x];
+}
+
+void setElement(int x, int y, int age, int value){
+	array[y*size+x]=value;
+
 }
 
 void genlife(int *a, unsigned int n){
@@ -60,53 +64,18 @@ void readlife(int *a, unsigned int n){
 	}
 }
 
-unsigned int countNeighbours(int *a, unsigned int n, int i, int j){
+int countNeighbours(int *a, unsigned int n, int x, int y){
+
 	int neighbours = 0;
-	int neighbours2 = 0;
-
-	neighbours2 += getElement(i,(j+1+n)%n, 0);
-	neighbours2 += getElement(i,(j-1+n)%n, 0);
-	neighbours2 += getElement((i+1+n)%n,j, 0);
-	neighbours2 += getElement((i-1+n)%n,j, 0);
-	neighbours2 += getElement((i+1+n)%n,(j+1+n)%n, 0);
-	neighbours2 += getElement((i+1+n)%n,(j-1+n)%n, 0);
-	neighbours2 += getElement((i-1+n)%n,(j+1+n)%n, 0);
-	neighbours2 += getElement((i-1+n)%n,(j-1+n)%n, 0);
-
-
-	if(a[(i)*n + (j-1+n)%n] == 1){
-		neighbours++;
-	}
 	
-	if(a[(i)*n + (j+1)%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i+1+n)%n)*n + j%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i-1+n)%n)*n + j%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i+1+n)%n)*n + (j-1+n)%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i+1+n)%n)*n + (j+1)%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i-1+n)%n)*n + (j-1+n)%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i-1+n)%n)*n + (j+1)%n] == 1){
-		neighbours++;
-	}
-
-	printf("X: %i, Y: %i, Ny %i, Gammel %i \n", i,j, neighbours2,neighbours);
+	neighbours += getElement(x,(y+1+size)%size, 0);
+	neighbours += getElement(x,(y-1+size)%size, 0);
+	neighbours += getElement((x+1+size)%size,y, 0);
+	neighbours += getElement((x-1+size)%size,y, 0);
+	neighbours += getElement((x+1+size)%size,(y+1+size)%size, 0);
+	neighbours += getElement((x+1+size)%size,(y-1+size)%size, 0);
+	neighbours += getElement((x-1+size)%size,(y+1+size)%size, 0);
+	neighbours += getElement((x-1+size)%size,(y-1+size)%size, 0);
 
 	return neighbours;
 }
@@ -115,7 +84,7 @@ unsigned int countNeighbours(int *a, unsigned int n, int i, int j){
 void inIteration(int *a, int *b, unsigned int n) {
 	cilk_for (int i = 0; i < n; ++i)	{
 		cilk_for (int j = 0; j < n; ++j){
-			unsigned int neighbours = countNeighbours(a,n,i,j);
+			unsigned int neighbours = countNeighbours(a,n,j,i);
 			if(neighbours > 3){
 				b[i*n+j] = 0;
 			}else if(neighbours < 2){
@@ -141,7 +110,7 @@ void life(int *a, unsigned int n, unsigned int iter){
 	int *b;
 	b = (int *)malloc(sizeof(int)*n*n);
 	size = n;
-	array =a;
+	array = a;
 
 	printGame(n,a);
 
