@@ -5,23 +5,25 @@ Team member 2 : Jane Doe
 */
 
 #include "life.h"
+unsigned int size;
+int *array;
 
 //Generate the life matrix any way you want. We would highly recommend that you print the generated
 //matrix into a file, so that you can share it with other teams for checking correctness.
-void printGame(unsigned int size, int* a){
-	for (int i = 0; i < size; ++i)
+void printGame(unsigned int n, int* a){
+	for (int i = 0; i < n; ++i)
 	{
-		for (int j = 0; j < size; ++j)
+		for (int j = 0; j < n; ++j)
 		{
-			printf("%i ", a[i* size + j]);
+			printf("%i ", a[i* n + j]);
 		}
 		printf("\n");
 	}
 }
 
-int getElement(int *a, int x, int y, int age){
+int getElement(int x, int y, int age){
 	
-	return a[i*n+j];
+	return array[y*size+x];
 }
 
 void genlife(int *a, unsigned int n){
@@ -38,7 +40,7 @@ void genlife(int *a, unsigned int n){
 
 //Read the life matrix from a file
 void readlife(int *a, unsigned int n){
-/*	
+	
 	FILE *file;
 	int i,j;
 	char *line;
@@ -56,7 +58,6 @@ void readlife(int *a, unsigned int n){
 			a[j +i*n] = atoi(&line[2 * j]);
 		}
 	}
-	*/
 }
 
 int countNeighbours(int *a, unsigned int n, int i, int j){
@@ -102,6 +103,9 @@ int countNeighbours(int *a, unsigned int n, int i, int j){
 void life(int *a, unsigned int n, unsigned int iter){
 	int *b;
 	b = (int *)malloc(sizeof(int)*n*n);
+	size = n;
+	array =a;
+
 	printGame(n,a);
 
 	for (int k = 0; k < iter; ++k){
@@ -119,15 +123,13 @@ void life(int *a, unsigned int n, unsigned int iter){
 				}
 			}
 
-			printGame(n,a);
-			memcpy(a,b,sizeof(int)*n*n);
-			printGame(n,a);
 		}
 		memcpy(a,b,sizeof(int)*n*n);
 		printf("\n");
 		printGame(n,a);
 			
 	}
+
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
 	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
 	// 20 ... 50. The countlive function is defined in life.cpp, which you can use. Note that you can
