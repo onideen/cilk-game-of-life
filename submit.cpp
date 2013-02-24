@@ -60,7 +60,7 @@ void readlife(int *a, unsigned int n){
 	}
 }
 
-int countNeighbours(int *a, unsigned int n, int i, int j){
+unsigned int countNeighbours(int *a, unsigned int n, int i, int j){
 	int neighbours = 0;
 	int neighbours2 = 0;
 
@@ -111,6 +111,30 @@ int countNeighbours(int *a, unsigned int n, int i, int j){
 	return neighbours;
 }
 
+
+void inIteration(int *a, int *b, unsigned int n) {
+	cilk_for (int i = 0; i < n; ++i)	{
+		cilk_for (int j = 0; j < n; ++j){
+			unsigned int neighbours = countNeighbours(a,n,i,j);
+			if(neighbours > 3){
+				b[i*n+j] = 0;
+			}else if(neighbours < 2){
+				b[i*n+j] = 0;
+
+			}else if(neighbours == 3){
+				b[i*n+j] = 1;
+			}else if(neighbours ==2){
+				b[i*n +j] = a[i*n+j];
+			}
+		}
+
+	}
+	memcpy(a,b,sizeof(int)*n*n);
+	printf("\n");
+	printGame(n,a);
+
+
+}
 //Life function
 void life(int *a, unsigned int n, unsigned int iter){
 
@@ -122,24 +146,7 @@ void life(int *a, unsigned int n, unsigned int iter){
 	printGame(n,a);
 
 	for (int k = 0; k < iter; ++k){
-		for (int i = 0; i < n; ++i)	{
-			for (int j = 0; j < n; ++j){
-				if(countNeighbours(a,n,i,j) > 3){
-					b[i*n+j] = 0;
-				}else if(countNeighbours(a,n,i,j) < 2){
-					b[i*n+j] = 0;
-
-				}else if(countNeighbours(a,n,i,j) == 3){
-					b[i*n+j] = 1;
-				}else if(countNeighbours(a,n,i,j) ==2){
-					b[i*n +j] = a[i*n+j];
-				}
-			}
-
-		}
-		memcpy(a,b,sizeof(int)*n*n);
-		printf("\n");
-		printGame(n,a);
+		inIteration(a,b,n);
 	}
 
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
