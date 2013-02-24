@@ -21,9 +21,13 @@ void printGame(unsigned int n, int* a){
 	}
 }
 
-int getElement(int x, int y, int age){
-	
+int getElement(int x, int y, int age){	
 	return array[y*size+x];
+}
+
+void setElement(int x, int y, int age, int value){
+	array[y*size+x]=value;
+
 }
 
 void genlife(int *a, unsigned int n){
@@ -80,7 +84,7 @@ void life(int *a, unsigned int n, unsigned int iter){
 	int *b;
 	b = (int *)malloc(sizeof(int)*n*n);
 	size = n;
-	array =a;
+	array = a;
 
 	printGame(n,a);
 
