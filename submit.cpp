@@ -101,6 +101,7 @@ int countNeighbours(int *a, unsigned int n, int i, int j){
 
 //Life function
 void life(int *a, unsigned int n, unsigned int iter){
+
 	int *b;
 	b = (int *)malloc(sizeof(int)*n*n);
 	size = n;
@@ -127,7 +128,6 @@ void life(int *a, unsigned int n, unsigned int iter){
 		memcpy(a,b,sizeof(int)*n*n);
 		printf("\n");
 		printGame(n,a);
-			
 	}
 
 	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
