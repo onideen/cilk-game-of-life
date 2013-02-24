@@ -15,3 +15,9 @@
 Makefile
 main.c
 main.cpp
+
+
+#executables
+life
+life_debug
+validate

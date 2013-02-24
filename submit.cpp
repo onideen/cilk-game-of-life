@@ -62,6 +62,17 @@ void readlife(int *a, unsigned int n){
 
 int countNeighbours(int *a, unsigned int n, int i, int j){
 	int neighbours = 0;
+	int neighbours2 = 0;
+
+	neighbours2 += getElement(i,(j+1+n)%n, 0);
+	neighbours2 += getElement(i,(j-1+n)%n, 0);
+	neighbours2 += getElement((i+1+n)%n,j, 0);
+	neighbours2 += getElement((i-1+n)%n,j, 0);
+	neighbours2 += getElement((i+1+n)%n,(j+1+n)%n, 0);
+	neighbours2 += getElement((i+1+n)%n,(j-1+n)%n, 0);
+	neighbours2 += getElement((i-1+n)%n,(j+1+n)%n, 0);
+	neighbours2 += getElement((i-1+n)%n,(j-1+n)%n, 0);
+
 
 	if(a[(i)*n + (j-1+n)%n] == 1){
 		neighbours++;
@@ -95,6 +106,7 @@ int countNeighbours(int *a, unsigned int n, int i, int j){
 		neighbours++;
 	}
 
+	printf("X: %i, Y: %i, Ny %i, Gammel %i \n", i,j, neighbours2,neighbours);
 
 	return neighbours;
 }
