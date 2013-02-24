@@ -125,6 +125,9 @@ int countNeighbours(int x, int y, int age){
 
 //Do one iteration
 void Calculate_next_life(int *a, unsigned int k) {
+	//printGame(size,(k)%2);
+	//printf("\n");
+
 	cilk_for (int i = 0; i < size; ++i)	{
 		cilk_for (int j = 0; j < size; ++j){
 			unsigned int neighbours = countNeighbours(j,i,k%2);
@@ -139,10 +142,8 @@ void Calculate_next_life(int *a, unsigned int k) {
 				setElement(j,i,(k+1)%2,getElement(j,i,k%2));
 			}
 		}
-	}
+	}	
 
-	printf("\n");
-	printGame(size,(k+1)%2);
 }
 
 
@@ -157,22 +158,23 @@ void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 	size = n;
 	array = a;
 
-	printGame(n,0);
 
 
-	for (int current_it = 0; current_it < iter; ++current_it){
-		Calculate_next_life(a,current_it);
+	for (int current_it = 1; current_it <= iter; ++current_it){
+		Calculate_next_life(a,current_it-1);
 
 		#if DEBUG == 1
 			if(iter%10 == 0) {
 				if(current_it%(iter/10) == 0) {
-					printf("HERE\n");
+					int *a = current_it%2 == 0 ? array : array2;
 					int total_lives = countlive(a, n);
-					
-					livecount[current_it/(iter/10)] = total_lives;
+					livecount[(current_it/(iter/10)) -1] = total_lives;
 				}
 			}
 		#endif
 	}
+	
+//	printGame(n,iter%2);
+
 }
 
