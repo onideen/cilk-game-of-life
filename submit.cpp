@@ -16,6 +16,7 @@ int *array2;
 //Generate the life matrix any way you want. We would highly recommend that you print the generated
 //matrix into a file, so that you can share it with other teams for checking correctness.
 
+//Gets an element with cordinates x,y 
 int getElement(int x, int y, int age){
 	if(age == 0){
 		return array[y*size + x];
@@ -24,6 +25,7 @@ int getElement(int x, int y, int age){
 	}
 }
 
+//Sets an element with cordinates x,y to value
 int setElement(int x, int y, int age, int value){
 	if(age == 0){
 		array[y*size +x] = value;
@@ -31,6 +33,7 @@ int setElement(int x, int y, int age, int value){
 		array2[y*size +x] = value;
 	}
 }
+
 /*
 int getElement(int x, int y, int age){
 	int currentVal = array[(y*size)/4+x/4];
@@ -61,6 +64,8 @@ void setElement(int x, int y, int age, int value){
 	}
 }
 */
+
+//Print the board
 void printGame(unsigned int n, int age){
 	for (int i = 0; i < n; ++i)
 	{
@@ -72,6 +77,7 @@ void printGame(unsigned int n, int age){
 	}
 }
 
+//Generating a random board
 void genlife(int *a, unsigned int n){
 	array = a;
 	size = n;
@@ -85,30 +91,23 @@ void genlife(int *a, unsigned int n){
 	}	
 }
 
-//Read the life matrix from a file
+//Read the life matrix from stdin
 void readlife(int *a, unsigned int n){
-	FILE *file;
 	int i,j;
 	char *line;
 	array = a;
 	size = n;
 
 	line = (char *)malloc(2*n+2);
-
-	file = fopen("input","rt");
-
-	if(file == NULL){
-		printf("Input file not found\n");
-		exit(-1);
-	}
 	for(i = 0; i < n; i++){
-		fgets(line, 2*n+2, file);
+		fgets(line, 2*n+2, stdin);
 		for(j =0; j < n; j++){
 			setElement(j,i,0,atoi(&line[2 * j]));
 		}
 	}
 }
 
+//Count the number of living Neighbours
 int countNeighbours(int x, int y, int age){
 
 	int neighbours = 0;
@@ -121,11 +120,10 @@ int countNeighbours(int x, int y, int age){
 	neighbours += getElement((x+1+size)%size,(y-1+size)%size, age);
 	neighbours += getElement((x-1+size)%size,(y+1+size)%size, age);
 	neighbours += getElement((x-1+size)%size,(y-1+size)%size, age);
-	printf("%i ", getElement((x-1+size)%size,(y-1+size)%size, age));
 	return neighbours;
 }
 
-
+//Do one iteration
 void Calculate_next_life(int *a, unsigned int k) {
 	cilk_for (int i = 0; i < size; ++i)	{
 		cilk_for (int j = 0; j < size; ++j){
@@ -133,29 +131,18 @@ void Calculate_next_life(int *a, unsigned int k) {
 
 			if(neighbours > 3){
 				setElement(j,i,(k+1)%2,0);
-				//b[i*n+j] = 0;
 			}else if(neighbours < 2){
 				setElement(j,i,(k+1)%2,0);
-				
-				//b[i*n+j] = 0;
-
 			}else if(neighbours == 3){
 				setElement(j,i,(k+1)%2,1);
-				
-				//b[i*n+j] = 1;
 			}else if(neighbours ==2){
 				setElement(j,i,(k+1)%2,getElement(j,i,k%2));
-				
-				//b[i*n +j] = a[i*n+j];
 			}
 		}
-		printf("\n");
 	}
-	//memcpy(a,b,sizeof(int)*n*n);
-	printf("\nITER\n");
+
+	printf("\n");
 	printGame(size,(k+1)%2);
-
-
 }
 
 
