@@ -1,7 +1,7 @@
 /*
 Homework 5 : The Game of Life.
-Team member 1 : John Doe 
-Team member 2 : Jane Doe
+Team member 1 : Vegar Engen 
+Team member 2 : Arne Bjune
 */
 
 // Function declarations file
@@ -57,9 +57,6 @@ int cilk_main(int argc, char **argv)
 		}
 
 		genlife(a,n);
-		printGame(n, 0);
-		exit(0);
-		int live = countlive(a,n);
 	}
 	
 	//Debug array	

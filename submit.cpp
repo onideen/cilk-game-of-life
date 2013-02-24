@@ -15,7 +15,7 @@ int *array2;
 
 //Generate the life matrix any way you want. We would highly recommend that you print the generated
 //matrix into a file, so that you can share it with other teams for checking correctness.
-
+/*
 //Gets an element with cordinates x,y 
 int getElement(int x, int y, int age){
 	if(age == 0){
@@ -33,8 +33,8 @@ int setElement(int x, int y, int age, int value){
 		array2[y*size +x] = value;
 	}
 }
+*/
 
-/*
 int getElement(int x, int y, int age){
 	int currentVal = array[(y*size)/4+x/4];
 //	printf("Getting %i %i %i\n", (int) array[(y*size)/4+x/4] , (int)pow(2,(x%4)*2+age),(int) array[(y*size)/4+x/4] & (int)pow(2,(x%4)*2+age));
@@ -63,7 +63,7 @@ void setElement(int x, int y, int age, int value){
 	//	printf("Setting 0\n");
 	}
 }
-*/
+
 
 //Print the board
 void printGame(unsigned int n, int age){
@@ -125,8 +125,8 @@ int countNeighbours(int x, int y, int age){
 
 //Do one iteration
 void Calculate_next_life(int *a, unsigned int k) {
-	//printGame(size,(k)%2);
-	//printf("\n");
+	printGame(size,(k)%2);
+	printf("\n");
 
 	cilk_for (int i = 0; i < size; ++i)	{
 		cilk_for (int j = 0; j < size; ++j){
