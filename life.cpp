@@ -34,6 +34,7 @@ int cilk_main(int argc, char **argv)
 		n = (unsigned int)atoi(argv[2]);
 		iter = (unsigned int)atoi(argv[3]);
 		a = (int *)malloc(sizeof(int)*(n*n));
+		memset(a,0,sizeof(int)*n*n);
 
 		if(a == NULL) {
 			printf("Malloc failed .. Exiting\n");
