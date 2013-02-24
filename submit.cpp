@@ -60,53 +60,17 @@ void readlife(int *a, unsigned int n){
 	}
 }
 
-int countNeighbours(int *a, unsigned int n, int i, int j){
+int countNeighbours(int *a, unsigned int n, int x, int y){
 	int neighbours = 0;
-	int neighbours2 = 0;
-
-	neighbours2 += getElement(i,(j+1+n)%n, 0);
-	neighbours2 += getElement(i,(j-1+n)%n, 0);
-	neighbours2 += getElement((i+1+n)%n,j, 0);
-	neighbours2 += getElement((i-1+n)%n,j, 0);
-	neighbours2 += getElement((i+1+n)%n,(j+1+n)%n, 0);
-	neighbours2 += getElement((i+1+n)%n,(j-1+n)%n, 0);
-	neighbours2 += getElement((i-1+n)%n,(j+1+n)%n, 0);
-	neighbours2 += getElement((i-1+n)%n,(j-1+n)%n, 0);
-
-
-	if(a[(i)*n + (j-1+n)%n] == 1){
-		neighbours++;
-	}
 	
-	if(a[(i)*n + (j+1)%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i+1+n)%n)*n + j%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i-1+n)%n)*n + j%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i+1+n)%n)*n + (j-1+n)%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i+1+n)%n)*n + (j+1)%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i-1+n)%n)*n + (j-1+n)%n] == 1){
-		neighbours++;
-	}
-
-	if(a[((i-1+n)%n)*n + (j+1)%n] == 1){
-		neighbours++;
-	}
-
-	printf("X: %i, Y: %i, Ny %i, Gammel %i \n", i,j, neighbours2,neighbours);
+	neighbours += getElement(x,(y+1+size)%size, 0);
+	neighbours += getElement(x,(y-1+size)%size, 0);
+	neighbours += getElement((x+1+size)%size,y, 0);
+	neighbours += getElement((x-1+size)%size,y, 0);
+	neighbours += getElement((x+1+size)%size,(y+1+size)%size, 0);
+	neighbours += getElement((x+1+size)%size,(y-1+size)%size, 0);
+	neighbours += getElement((x-1+size)%size,(y+1+size)%size, 0);
+	neighbours += getElement((x-1+size)%size,(y-1+size)%size, 0);
 
 	return neighbours;
 }
@@ -123,14 +87,14 @@ void life(int *a, unsigned int n, unsigned int iter){
 	for (int k = 0; k < iter; ++k){
 		for (int i = 0; i < n; ++i)	{
 			for (int j = 0; j < n; ++j){
-				if(countNeighbours(a,n,i,j) > 3){
+				if(countNeighbours(a,n,j,i) > 3){
 					b[i*n+j] = 0;
-				}else if(countNeighbours(a,n,i,j) < 2){
+				}else if(countNeighbours(a,n,j,i) < 2){
 					b[i*n+j] = 0;
 
-				}else if(countNeighbours(a,n,i,j) == 3){
+				}else if(countNeighbours(a,n,j,i) == 3){
 					b[i*n+j] = 1;
-				}else if(countNeighbours(a,n,i,j) ==2){
+				}else if(countNeighbours(a,n,j,i) ==2){
 					b[i*n +j] = a[i*n+j];
 				}
 			}
