@@ -77,18 +77,18 @@ void printGame(unsigned int n, int age){
 	}
 }
 
-//Generating a random board
-void genlife(int *a, unsigned int n){
-	array = a;
+void genlife(int *a, unsigned int n) {
 	size = n;
+	array = a;
+	srand(time(NULL));
 	
-	for (int i = 0; i < n; ++i)
+	cilk_for (int y = 0; y < n; y++)
 	{
-		for (int j = 0; j < n; ++j)
+		cilk_for (int x = 0; x < n; x++)
 		{
-			setElement(i,j,0,1);
+			setElement(x,y,0,rand()%2);
 		}
-	}	
+	}
 }
 
 //Read the life matrix from stdin
