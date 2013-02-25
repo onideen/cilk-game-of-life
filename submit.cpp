@@ -5,15 +5,9 @@ Team member 2 : Arne Bjune
 */
 
 #include "life.h"
-#include "math.h"
 
 unsigned int size;
 unsigned char *array;
-
-int superValue;
-
-//Generate the life matrix any way you want. We would highly recommend that you print the generated
-//matrix into a file, so that you can share it with other teams for checking correctness.
 
 //Gets an element with cordinates x,y 
 #if ALG == 0
@@ -91,7 +85,6 @@ void genlife(unsigned char *a, unsigned int n, int whichstart) {
 	size = n;
 	array = a;
 	
-	memset(array, 0, n*n);
 	switch (whichstart) {
 		case 0:
 			break;
@@ -211,10 +204,6 @@ void Calculate_next_life(unsigned char *a, unsigned int k) {
 	}
 }
 
-
-void Store_into_livecount(int total_lives) {
-
-}
 
 //Life function
 void life(unsigned char *a, unsigned int n, unsigned int iter, int* livecount){

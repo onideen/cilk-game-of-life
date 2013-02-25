@@ -34,14 +34,24 @@ int cilk_main(int argc, char **argv)
 	{
 		n = (unsigned int)atoi(argv[2]);
 		iter = (unsigned int)atoi(argv[3]);
-		a = (unsigned char *)malloc(sizeof(int)*(n*n));
-		memset(a,0,sizeof(int)*n*n);
-
-		if(a == NULL) {
-			printf("Malloc failed .. Exiting\n");
+		#if ALG == 1
+			a = (unsigned char *)malloc(sizeof(unsigned char)*ceil((n*n)/4));
+			if(a == NULL) {
+				printf("Malloc failed .. Exiting\n");
 			exit(-1);
-		}
+			}
+			memset(a,0,(sizeof(unsigned char)*n)*ceil(n/4));
+		#endif
 
+		#if ALG == 0
+			a = (unsigned char *)malloc((sizeof(unsigned char)*(n*n)));
+			if(a == NULL) {
+				printf("Malloc failed .. Exiting\n");
+				exit(-1);
+			}
+
+			memset(a,0,sizeof(unsigned char)*ceil((n*n)/4));
+		#endif
 		readlife(a,n);
 	}
 	// Generate random data
@@ -49,22 +59,42 @@ int cilk_main(int argc, char **argv)
 	{
 		n = (unsigned int)atoi(argv[1]);
 		iter = (unsigned int)atoi(argv[2]);
-		a = (unsigned char *)malloc(sizeof(int)*(n*n));
-		memset(a,0,sizeof(int)*n*n);
-
-		if(a == NULL) {
-			printf("Malloc failed .. Exiting\n");
+		
+		#if ALG == 1
+			a = (unsigned char *)malloc(sizeof(unsigned char)*ceil((n*n)/4));
+			if(a == NULL) {
+				printf("Malloc failed .. Exiting\n");
 			exit(-1);
-		}
+			}
+			memset(a,0,(sizeof(unsigned char)*n)*ceil(n/4));
+		#endif
+
+		#if ALG == 0
+			a = (unsigned char *)malloc((sizeof(unsigned char)*(n*n)));
+			if(a == NULL) {
+				printf("Malloc failed .. Exiting\n");
+				exit(-1);
+			}
+
+			memset(a,0,sizeof(unsigned char)*ceil((n*n)/4));
+		#endif
+
+
+		
 
 		genlife(a,n,1);
 	}
 	
-	//Debug array	
-	livecount = (int *)malloc(sizeof(int)*n);
+	
 
 	//Initialize livecount array	
 	#if DEBUG == 1
+		//Debug array	
+		livecount = (int *)malloc(sizeof(int)*n);
+		if(a == NULL) {
+					printf("Malloc failed .. Exiting\n");
+					exit(-1);
+		}
 		for(int i = 0; i < 10; i++)
 			livecount[i] = 0;
 	#endif

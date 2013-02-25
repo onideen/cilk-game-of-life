@@ -5,6 +5,7 @@
 #include<stdlib.h>
 #include<numeric>
 #include<sys/time.h>
+#include <math.h>
 
 
 void readlife(unsigned char *a,unsigned int n);
