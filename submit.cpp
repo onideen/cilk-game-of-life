@@ -32,16 +32,17 @@ void setElement(int x, int y, int age, int value){
 
 }
 
-void genlife(int *a, unsigned int n){
-	//int i, j;	
-
-	for (int i = 0; i < n; ++i)
+void genlife(int *a, unsigned int n) {
+	array = a;
+	srand(time(NULL));
+	cilk_for (int y = 0; y < n; y++)
 	{
-		for (int j = 0; j < n; ++j)
+		cilk_for (int x = 0; x < n; x++)
 		{
-			a[i*n +j] = 1;
+			setElement(x,y,0,rand()%2);
 		}
-	}	
+	}
+	exit(0);
 }
 
 //Read the life matrix from a file
