@@ -9,16 +9,15 @@ Team member 2 : Arne Bjune
 
 unsigned int size;
 unsigned char *array;
-unsigned char *array2;
 
 int superValue;
 
-
-
 //Generate the life matrix any way you want. We would highly recommend that you print the generated
 //matrix into a file, so that you can share it with other teams for checking correctness.
-/*
+
 //Gets an element with cordinates x,y 
+#if ALG == 0
+unsigned char *array2;
 int getElement(int x, int y, int age){
 	if(age == 0){
 		return array[y*size + x];
@@ -35,10 +34,11 @@ int setElement(int x, int y, int age, int value){
 		array2[y*size +x] = value;
 	}
 }
-*/
+#endif
 
+#if ALG == 1
 int getElement(int x, int y, int age){
-	int currentVal = array[(y*size)/4+x/4];
+	int currentVal = array[(int)floor(((y*size)+x)/4)];
 
 	if((currentVal  & (int)pow(2,(x%4)*2+age)) == (int)pow(2,(x%4)*2+age)){
 		return 1;
@@ -50,12 +50,13 @@ int getElement(int x, int y, int age){
 void setElement(int x, int y, int age, int value){
 	int currentVal = getElement(x,y,age);
 	if(currentVal == 0 && value == 1){
-		array[(y*size)/4+x/4] += (int)pow(2,(x%4)*2+age);
+		array[(int)floor(((y*size)+x)/4)] += (int)pow(2,(x%4)*2+age);
 	
 	} else if(currentVal == 1 && value == 0){
-		array[(y*size)/4+x/4] -= pow(2,(x%4)*2+age);
+		array[(int)floor(((y*size)+x)/4)] -= pow(2,(x%4)*2+age);
 	}
 }
+#endif 
 
 //The countlive function to be used for calculating the number of live cells.
 int countlive(int age, unsigned int n)
@@ -207,7 +208,7 @@ void Calculate_next_life(unsigned char *a, unsigned int k) {
 				setElement(x,y,(k+1)%2,getElement(x,y,k%2));
 			}
 		}
-	}	
+	}
 }
 
 
@@ -217,11 +218,16 @@ void Store_into_livecount(int total_lives) {
 
 //Life function
 void life(unsigned char *a, unsigned int n, unsigned int iter, int* livecount){
-
-	array2 = (unsigned char *)malloc(sizeof(int)*n*n);
 	size = n;
 	array = a;
 
+	#if ALG == 0
+		array2 = (unsigned char *)malloc(sizeof(int)*n*n);
+		if(array2 == NULL) {
+			printf("Malloc failed .. Exiting\n");
+			exit(-1);
+		}
+	#endif
 
 
 	for (int current_it = 1; current_it <= iter; ++current_it){

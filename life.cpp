@@ -57,7 +57,7 @@ int cilk_main(int argc, char **argv)
 			exit(-1);
 		}
 
-		genlife(a,n,5);
+		genlife(a,n,1);
 	}
 	
 	//Debug array	
