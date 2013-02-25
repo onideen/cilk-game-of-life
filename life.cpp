@@ -1,7 +1,7 @@
 /*
 Homework 5 : The Game of Life.
-Team member 1 : John Doe 
-Team member 2 : Jane Doe
+Team member 1 : Vegar Engen 
+Team member 2 : Arne Bjune
 */
 
 // Function declarations file
@@ -17,7 +17,7 @@ int cilk_main(int argc, char **argv)
 {
 	unsigned int n;
 	unsigned int iter;
-	int *a;
+	unsigned char *a;
 
 	// Size calculation
 	
@@ -34,7 +34,7 @@ int cilk_main(int argc, char **argv)
 	{
 		n = (unsigned int)atoi(argv[2]);
 		iter = (unsigned int)atoi(argv[3]);
-		a = (int *)malloc(sizeof(int)*(n*n));
+		a = (unsigned char *)malloc(sizeof(int)*(n*n));
 		memset(a,0,sizeof(int)*n*n);
 
 		if(a == NULL) {
@@ -49,7 +49,7 @@ int cilk_main(int argc, char **argv)
 	{
 		n = (unsigned int)atoi(argv[1]);
 		iter = (unsigned int)atoi(argv[2]);
-		a = (int *)malloc(sizeof(int)*(n*n));
+		a = (unsigned char *)malloc(sizeof(int)*(n*n));
 		memset(a,0,sizeof(int)*n*n);
 
 		if(a == NULL) {
@@ -95,4 +95,13 @@ int cilk_main(int argc, char **argv)
 
 }
 
+//The countlive function to be used for calculating the number of live cells.
+int countlive(unsigned char *a, unsigned int n)
+{
+	int sum = 0;
+	for(int i = 0; i < n*n; i++)
+	{
+		sum += a[i];	
+	}	
 
+}
