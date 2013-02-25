@@ -8,16 +8,19 @@ Team member 2 : Arne Bjune
 #include "math.h"
 
 unsigned int size;
-int *array;
-int *array2;
+
 int firstY, firstX, lastX, lastY;
 
+unsigned char *array;
 
+int superValue;
 
 //Generate the life matrix any way you want. We would highly recommend that you print the generated
 //matrix into a file, so that you can share it with other teams for checking correctness.
 
 //Gets an element with cordinates x,y 
+#if ALG == 0
+unsigned char *array2;
 int getElement(int x, int y, int age){
 	if(age == 0){
 		return array[y*size + x];
@@ -34,37 +37,29 @@ int setElement(int x, int y, int age, int value){
 		array2[y*size +x] = value;
 	}
 }
+#endif
 
-/*
+#if ALG == 1
 int getElement(int x, int y, int age){
-	int currentVal = array[(y*size)/4+x/4];
-//	printf("Getting %i %i %i\n", (int) array[(y*size)/4+x/4] , (int)pow(2,(x%4)*2+age),(int) array[(y*size)/4+x/4] & (int)pow(2,(x%4)*2+age));
+	int currentVal = array[(int)floor(((y*size)+x)/4)];
 
 	if((currentVal  & (int)pow(2,(x%4)*2+age)) == (int)pow(2,(x%4)*2+age)){
-	//	printf("Fant 1\n");
 		return 1;
 	}else if((currentVal & (int)pow(2,(x%4)*2+age)) == 0){
-	//	printf("Fant 0\n");
 		return 0;
-	}else{
-	//	printf("---------------error!----------------\n");
 	}
 }
 
 void setElement(int x, int y, int age, int value){
 	int currentVal = getElement(x,y,age);
-	//printf("%i & %i = %i \n", currentVal, pow(2,(x%4)*2+age),currentVal & (int)pow(2,(x%4)*2+age));
-	if((currentVal & (int)pow(2,(x%4)*2+age)) == 0 && value == 1){
-		array[(y*size)/4+x/4] += (int)pow(2,(x%4)*2+age);
-	//	printf("Setting 1\n");
-
+	if(currentVal == 0 && value == 1){
+		array[(int)floor(((y*size)+x)/4)] += (int)pow(2,(x%4)*2+age);
 	
-	} else if((currentVal & (int)pow(2,(x%4)*2+age)) == pow(2,(x%4)*2+age) && value == 0){
-		array[(y*size)/4+x/4] -= pow(2,(x%4)*2+age);
-	//	printf("Setting 0\n");
+	} else if(currentVal == 1 && value == 0){
+		array[(int)floor(((y*size)+x)/4)] -= pow(2,(x%4)*2+age);
 	}
 }
-*/
+#endif 
 
 //The countlive function to be used for calculating the number of live cells.
 int countlive(int age, unsigned int n)
@@ -93,7 +88,7 @@ void printGame(unsigned int n, int age){
 	}
 }
 
-void genlife(int *a, unsigned int n, int whichstart) {
+void genlife(unsigned char *a, unsigned int n, int whichstart) {
 	int startX = floor(n/3);
 	int startY = floor(n/5);
 	size = n;
@@ -170,7 +165,7 @@ void genlife(int *a, unsigned int n, int whichstart) {
 }
 
 //Read the life matrix from stdin
-void readlife(int *a, unsigned int n){
+void readlife(unsigned char *a, unsigned int n){
 	char *line;
 	array = a;
 	size = n;
@@ -201,28 +196,27 @@ int countNeighbours(int x, int y, int age){
 }
 
 //Do one iteration
-void Calculate_next_life(int *a, unsigned int k) {
-	//printGame(size,(k)%2);
-	//printf("\n");
+void Calculate_next_life(unsigned char *a, unsigned int k) {
+	int lastYtmp = 0;
+	int lastXtmp = 0;
+	int firstXtmp = size-1;
+	int firstYtmp = size-1;
+
+
+	if(k == 0) {			
+		firstY = 1;
+		lastY = size-2;
+		firstX = 1;
+		lastX = size-2;
+	}
+	
+
 
 	cilk_for (int y = firstY-1; y <= lastY+1; ++y)	{
-		if(k == 0) {			
-			firstY = size-1;
-			lastY = 0;
-		}
+		
 
 		for (int x = firstX-1; x <= lastX+1; ++x){
 			unsigned int neighbours = countNeighbours(x,y,k%2);
-			if (k == 0 && y == 0) {
-				firstX = size-1;
-				lastX = 0;
-			}
-			if (neighbours > 0) {
-				if (x < firstX) firstX = x;
-				if (y < firstY) firstY = y;
-				if (x > lastX) lastX = x;
-				if (y > lastY) lastY = y;
-			}
 
 			if(neighbours > 3){
 				setElement(x,y,(k+1)%2,0);
@@ -233,27 +227,29 @@ void Calculate_next_life(int *a, unsigned int k) {
 			}else if(neighbours ==2){
 				setElement(x,y,(k+1)%2,getElement(x,y,k%2));
 			}
+
+			if (getElement(x,y,k%2) > 0) {
+			printf("Came here\n");
+
+				if (x < firstXtmp) firstXtmp = x;
+				if (y < firstYtmp) firstYtmp = y;
+				if (x > lastXtmp) lastXtmp = x;
+				if (y > lastYtmp) lastYtmp = y;
+			}
 		}
-
-		if (firstX == 0) firstX = 1;
-		if (firstY == 0) firstY = 1;
-		if (lastX == size-1) lastX = size-2;
-		if (lastY == size-1) lastY = size-2;
-
 		
-	}	
+	}
+
+	firstY = firstYtmp == 0 ? 1 : firstYtmp;
+	firstX = firstXtmp == 0 ? 1 : firstXtmp;
+	lastY = lastYtmp == size-1 ? size-2 : lastYtmp;
+	lastX = lastXtmp == size-1 ? size-2 : lastXtmp;
 
 }
 
-
-void Store_into_livecount(int total_lives) {
-
-}
 
 //Life function
-void life(int *a, unsigned int n, unsigned int iter, int* livecount){
-
-	array2 = (int *)malloc(sizeof(int)*n*n);
+void life(unsigned char *a, unsigned int n, unsigned int iter, int* livecount){
 	size = n;
 	array = a;
 	firstY = 1;
@@ -261,6 +257,15 @@ void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 	lastX = size-2; 
 	lastY = size-2;
 		
+
+	#if ALG == 0
+		array2 = (unsigned char *)malloc(sizeof(int)*n*n);
+		if(array2 == NULL) {
+			printf("Malloc failed .. Exiting\n");
+			exit(-1);
+		}
+	#endif
+
 
 	for (int current_it = 1; current_it <= iter; ++current_it){
 		Calculate_next_life(a,current_it-1);
@@ -275,7 +280,6 @@ void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 		#endif
 	}
 	
-//	printGame(n,iter%2);
 
 }
 

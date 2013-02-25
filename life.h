@@ -7,8 +7,8 @@
 #include<sys/time.h>
 
 
-void readlife(int *a,unsigned int n);
-void genlife(int *a,unsigned int n, int whichstart);
-void life(int *a,unsigned int n, unsigned int iter, int* livecount);
+void readlife(unsigned char *a,unsigned int n);
+void genlife(unsigned char *a,unsigned int n, int whichstart);
+void life(unsigned char *a,unsigned int n, unsigned int iter, int* livecount);
 void printGame(unsigned int n, int age);
-int countlive(int *a, unsigned int n, int age);
+int countlive(unsigned char *a, unsigned int n, int age);
