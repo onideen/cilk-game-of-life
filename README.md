@@ -15,11 +15,11 @@ For `life` we were able to run a matrix with n = 65500 without segfaulting.
 In the 
 
 
-![Speedup](https://raw.github.com/vegaen/cilk-game-of-life/master/img/speedup.png "Speedup")
+![Speedup](https://raw.github.com/vegaen/cilk-game-of-life/master/img/speedup-nprocs.png "Speedup")
 
 As we can tell from fig 1, the scalability of our code is really good (almost perfect linear). This is not supprising though, because in the way we wrote the code every opperation in each iteration is independent and can be done in any order. 
 
-![Cups / Problem size](https://raw.github.com/vegaen/cilk-game-of-life/master/img/cups.png "Cups / Problem size")
+![Cups / Problem size](https://raw.github.com/vegaen/cilk-game-of-life/master/img/cups-problem-size.png "Cups / Problem size")
 
 For this graph we can see that the number of Cells UPdated by Second is quite low for smaller problem sizes, but as the problem sizes grows it converges towards 3.5e4. 
 
