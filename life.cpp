@@ -7,10 +7,11 @@ Team member 2 : Jane Doe
 // Function declarations file
 #include "life.h"
 
+using namespace std;
+
 // Debugging flag. Set to 0 during performance evaluation
 int *livecount;
 
-using namespace std;
 
 int cilk_main(int argc, char **argv)
 {
@@ -68,7 +69,7 @@ int cilk_main(int argc, char **argv)
 			livecount[i] = 0;
 	#endif
 
-	life(a,n,iter);
+	life(a,n,iter,livecount);
 
 	// Print the livecount array 
 	#if DEBUG == 1

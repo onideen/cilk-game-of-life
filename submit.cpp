@@ -1,12 +1,14 @@
 /*
 Homework 5 : The Game of Life.
-Team member 1 : John Doe 
-Team member 2 : Jane Doe
+Team member 1 : Vegar Engen 
+Team member 2 : Arne Bjune
 */
 
 #include "life.h"
 unsigned int size;
 int *array;
+
+
 
 //Generate the life matrix any way you want. We would highly recommend that you print the generated
 //matrix into a file, so that you can share it with other teams for checking correctness.
@@ -81,7 +83,7 @@ int countNeighbours(int *a, unsigned int n, int x, int y){
 }
 
 
-void inIteration(int *a, int *b, unsigned int n) {
+void Calculate_next_life(int *a, int *b, unsigned int n) {
 	cilk_for (int i = 0; i < n; ++i)	{
 		cilk_for (int j = 0; j < n; ++j){
 			unsigned int neighbours = countNeighbours(a,n,j,i);
@@ -104,8 +106,14 @@ void inIteration(int *a, int *b, unsigned int n) {
 
 
 }
+
+
+void Store_into_livecount(int total_lives) {
+
+}
+
 //Life function
-void life(int *a, unsigned int n, unsigned int iter){
+void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 
 	int *b;
 	b = (int *)malloc(sizeof(int)*n*n);
@@ -114,11 +122,22 @@ void life(int *a, unsigned int n, unsigned int iter){
 
 	printGame(n,a);
 
-	for (int k = 0; k < iter; ++k){
-		inIteration(a,b,n);
+	for (int current_it = 0; current_it < iter; ++current_it){
+		Calculate_next_life(a,b,n);
+
+		#if DEBUG == 1
+			if(iter%10 == 0) {
+				if(current_it%(iter/10) == 0) {
+					printf("HERE\n");
+					int total_lives = countlive(a, n);
+					
+					livecount[current_it/(iter/10)] = total_lives;
+				}
+			}
+		#endif
 	}
 
-	// You need to store the total number of livecounts for every 1/0th of the total iterations into the livecount array. 
+	// You need to store the total number of livecounts for every 1/10th of the total iterations into the livecount array. 
 	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
 	// 20 ... 50. The countlive function is defined in life.cpp, which you can use. Note that you can
 	// do the debugging only if the number of iterations is a multiple of 10.
