@@ -136,27 +136,5 @@ void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 			}
 		#endif
 	}
-
-	// You need to store the total number of livecounts for every 1/10th of the total iterations into the livecount array. 
-	// For example, if there are 50 iterations in your code, you need to store the livecount for iteration number 5 10 15 
-	// 20 ... 50. The countlive function is defined in life.cpp, which you can use. Note that you can
-	// do the debugging only if the number of iterations is a multiple of 10.
-	// Furthermore, you will need to wrap your counting code inside the wrapper #if DEBUG == 1 .. #endif to remove
-	// it during performance evaluation.
-	// For example, your code in this function could look like - 
-	//
-	//
-	//	for(each iteration)
-	//      {
-	//			
-	//		Calculate_next_life();
-	//		
-	//		#if DEBUG == 1
-	//		  if_current_iteration == debug_iteration
-	//		  total_lives = countlive();
-	//		  Store_into_livecount(total_lives);
-	//		#ENDIF
-	//		
-	//	}
 }
 
