@@ -67,11 +67,11 @@ void setElement(int x, int y, int age, int value){
 
 //Print the board
 void printGame(unsigned int n, int age){
-	for (int i = 0; i < n; ++i)
+	for (int y = 0; y < n; ++y)
 	{
-		for (int j = 0; j < n; ++j)
+		for (int x = 0; x < n; ++x)
 		{
-			printf("%i ", getElement(j,i,age));
+			printf("%i ", getElement(x,y,age));
 		}
 		printf("\n");
 	}
@@ -93,16 +93,15 @@ void genlife(int *a, unsigned int n) {
 
 //Read the life matrix from stdin
 void readlife(int *a, unsigned int n){
-	int i,j;
 	char *line;
 	array = a;
 	size = n;
 
 	line = (char *)malloc(2*n+2);
-	for(i = 0; i < n; i++){
+	for(int y = 0; y < n; y++){
 		fgets(line, 2*n+2, stdin);
-		for(j =0; j < n; j++){
-			setElement(j,i,0,atoi(&line[2 * j]));
+		for(int x = 0; x < n; x++){
+			setElement(x,y,0,atoi(&line[2 * x]));
 		}
 	}
 }
@@ -125,18 +124,18 @@ int countNeighbours(int x, int y, int age){
 
 //Do one iteration
 void Calculate_next_life(int *a, unsigned int k) {
-	cilk_for (int i = 0; i < size; ++i)	{
-		cilk_for (int j = 0; j < size; ++j){
-			unsigned int neighbours = countNeighbours(j,i,k%2);
+	cilk_for (int y = 0; y < size; ++y)	{
+		cilk_for (int x = 0; x < size; ++x){
+			unsigned int neighbours = countNeighbours(x,y,k%2);
 
 			if(neighbours > 3){
-				setElement(j,i,(k+1)%2,0);
+				setElement(x,y,(k+1)%2,0);
 			}else if(neighbours < 2){
-				setElement(j,i,(k+1)%2,0);
+				setElement(x,y,(k+1)%2,0);
 			}else if(neighbours == 3){
-				setElement(j,i,(k+1)%2,1);
+				setElement(x,y,(k+1)%2,1);
 			}else if(neighbours ==2){
-				setElement(j,i,(k+1)%2,getElement(j,i,k%2));
+				setElement(x,y,(k+1)%2,getElement(x,y,k%2));
 			}
 		}
 	}
