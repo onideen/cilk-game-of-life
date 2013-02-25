@@ -8,8 +8,10 @@ Team member 2 : Arne Bjune
 #include "math.h"
 
 unsigned int size;
-int *array;
-int *array2;
+unsigned char *array;
+unsigned char *array2;
+
+int superValue;
 
 
 
@@ -37,33 +39,23 @@ int setElement(int x, int y, int age, int value){
 
 int getElement(int x, int y, int age){
 	int currentVal = array[(y*size)/4+x/4];
-//	printf("Getting %i %i %i\n", (int) array[(y*size)/4+x/4] , (int)pow(2,(x%4)*2+age),(int) array[(y*size)/4+x/4] & (int)pow(2,(x%4)*2+age));
 
 	if((currentVal  & (int)pow(2,(x%4)*2+age)) == (int)pow(2,(x%4)*2+age)){
-	//	printf("Fant 1\n");
 		return 1;
 	}else if((currentVal & (int)pow(2,(x%4)*2+age)) == 0){
-	//	printf("Fant 0\n");
 		return 0;
-	}else{
-	//	printf("---------------error!----------------\n");
 	}
 }
 
 void setElement(int x, int y, int age, int value){
 	int currentVal = getElement(x,y,age);
-	//printf("%i & %i = %i \n", currentVal, pow(2,(x%4)*2+age),currentVal & (int)pow(2,(x%4)*2+age));
-	if((currentVal & (int)pow(2,(x%4)*2+age)) == 0 && value == 1){
+	if(currentVal == 0 && value == 1){
 		array[(y*size)/4+x/4] += (int)pow(2,(x%4)*2+age);
-	//	printf("Setting 1\n");
-
 	
-	} else if((currentVal & (int)pow(2,(x%4)*2+age)) == pow(2,(x%4)*2+age) && value == 0){
+	} else if(currentVal == 1 && value == 0){
 		array[(y*size)/4+x/4] -= pow(2,(x%4)*2+age);
-	//	printf("Setting 0\n");
 	}
 }
-
 
 //Print the board
 void printGame(unsigned int n, int age){
@@ -77,7 +69,7 @@ void printGame(unsigned int n, int age){
 	}
 }
 
-void genlife(int *a, unsigned int n) {
+void genlife(unsigned char *a, unsigned int n) {
 	size = n;
 	array = a;
 	srand(time(NULL));
@@ -92,7 +84,7 @@ void genlife(int *a, unsigned int n) {
 }
 
 //Read the life matrix from stdin
-void readlife(int *a, unsigned int n){
+void readlife(unsigned char *a, unsigned int n){
 	int i,j;
 	char *line;
 	array = a;
@@ -124,12 +116,15 @@ int countNeighbours(int x, int y, int age){
 }
 
 //Do one iteration
-void Calculate_next_life(int *a, unsigned int k) {
-	printGame(size,(k)%2);
-	printf("\n");
-
-	cilk_for (int i = 0; i < size; ++i)	{
-		cilk_for (int j = 0; j < size; ++j){
+void Calculate_next_life(unsigned char *a, unsigned int k) {
+	for(int x = 0; x < size;x++){
+		for (int y = 0; y < size; ++y)
+		{
+			setElement(x,y,(k+1)%2,0);
+		}
+	}
+	for (int i = 0; i < size; ++i)	{
+		for (int j = 0; j < size; ++j){
 			unsigned int neighbours = countNeighbours(j,i,k%2);
 
 			if(neighbours > 3){
@@ -143,7 +138,6 @@ void Calculate_next_life(int *a, unsigned int k) {
 			}
 		}
 	}	
-
 }
 
 
@@ -152,9 +146,9 @@ void Store_into_livecount(int total_lives) {
 }
 
 //Life function
-void life(int *a, unsigned int n, unsigned int iter, int* livecount){
+void life(unsigned char *a, unsigned int n, unsigned int iter, int* livecount){
 
-	array2 = (int *)malloc(sizeof(int)*n*n);
+	array2 = (unsigned char *)malloc(sizeof(int)*n*n);
 	size = n;
 	array = a;
 
@@ -166,7 +160,7 @@ void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 		#if DEBUG == 1
 			if(iter%10 == 0) {
 				if(current_it%(iter/10) == 0) {
-					int *a = current_it%2 == 0 ? array : array2;
+					unsigned char *a = current_it%2 == 0 ? array : array2;
 					int total_lives = countlive(a, n);
 					livecount[(current_it/(iter/10)) -1] = total_lives;
 				}
@@ -174,7 +168,6 @@ void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 		#endif
 	}
 	
-//	printGame(n,iter%2);
 
 }
 

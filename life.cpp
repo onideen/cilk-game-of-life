@@ -17,7 +17,7 @@ int cilk_main(int argc, char **argv)
 {
 	unsigned int n;
 	unsigned int iter;
-	int *a;
+	unsigned char *a;
 
 	// Size calculation
 	
@@ -34,7 +34,7 @@ int cilk_main(int argc, char **argv)
 	{
 		n = (unsigned int)atoi(argv[2]);
 		iter = (unsigned int)atoi(argv[3]);
-		a = (int *)malloc(sizeof(int)*(n*n));
+		a = (unsigned char *)malloc(sizeof(int)*(n*n));
 		memset(a,0,sizeof(int)*n*n);
 
 		if(a == NULL) {
@@ -49,7 +49,7 @@ int cilk_main(int argc, char **argv)
 	{
 		n = (unsigned int)atoi(argv[1]);
 		iter = (unsigned int)atoi(argv[2]);
-		a = (int *)malloc(sizeof(int)*(n*n));
+		a = (unsigned char *)malloc(sizeof(int)*(n*n));
 
 		if(a == NULL) {
 			printf("Malloc failed .. Exiting\n");
@@ -95,7 +95,7 @@ int cilk_main(int argc, char **argv)
 }
 
 //The countlive function to be used for calculating the number of live cells.
-int countlive(int *a, unsigned int n)
+int countlive(unsigned char *a, unsigned int n)
 {
 	int sum = 0;
 	for(int i = 0; i < n*n; i++)
