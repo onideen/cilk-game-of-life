@@ -12,7 +12,7 @@ How does it run on Triton?
 --------------------------
 
 For `life` we were able to run a matrix with n = 65500 without segfaulting.  
-In the 
+But we do not do as good as we hoped when it comes to time it, . 
 
 
 ![Speedup](https://raw.github.com/vegaen/cilk-game-of-life/master/img/speedup-nprocs.png "Speedup")
@@ -21,7 +21,7 @@ As we can tell from fig 1, the scalability of our code is really good (almost pe
 
 ![Cups / Problem size](https://raw.github.com/vegaen/cilk-game-of-life/master/img/cups-problem-size.png "Cups / Problem size")
 
-For this graph we can see that the number of Cells UPdated by Second is quite low for smaller problem sizes, but as the problem sizes grows it converges towards 3.5e4. 
+For this graph we can see that the number of Cells UPdated by Second is quite low for smaller problem sizes, but as the problem sizes grows it converges towards 3.5e4, which makes sense since smaller problems will use some time on the startup-process.
 
 
 
@@ -48,7 +48,7 @@ For `life` and `life_debug` we changed the int array used to store the world int
 For `life-memopt` and `life_deug-memopt` we try to minimalize the use of memory by splitting one char into 4 pieces, 2 bit in each piece, which we tough were a good aproach. But the complications and extended computation time by using bitwise manipulation was a huge disappointment. 
 
 
-For all of them we also moved the countlive into submit.cpp 
+For all of them we also moved the countlive into submit.cpp and made a getter and setter which gets or set the array.
 
 
 Problems
