@@ -10,5 +10,5 @@
 void readlife(int *a,unsigned int n);
 void genlife(int *a,unsigned int n);
 void life(int *a,unsigned int n, unsigned int iter, int* livecount);
-int countlive(int *a, unsigned int n);
 void printGame(unsigned int n, int age);
+int countlive(int *a, unsigned int n, int age);

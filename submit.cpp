@@ -65,6 +65,21 @@ void setElement(int x, int y, int age, int value){
 }
 */
 
+//The countlive function to be used for calculating the number of live cells.
+int countlive(int age, unsigned int n)
+{
+	int sum = 0;
+	for(int y = 0; y < n; y++)
+	{
+		for (int x = 0; x < n; ++x)
+		{
+			sum += getElement(x, y, age);	
+		}
+	}	
+
+	return sum;
+}
+
 //Print the board
 void printGame(unsigned int n, int age){
 	for (int y = 0; y < n; ++y)
@@ -164,8 +179,7 @@ void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 		#if DEBUG == 1
 			if(iter%10 == 0) {
 				if(current_it%(iter/10) == 0) {
-					int *a = current_it%2 == 0 ? array : array2;
-					int total_lives = countlive(a, n);
+					int total_lives = countlive(current_it%2, n);
 					livecount[(current_it/(iter/10)) -1] = total_lives;
 				}
 			}

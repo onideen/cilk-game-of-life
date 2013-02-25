@@ -57,9 +57,6 @@ int cilk_main(int argc, char **argv)
 		}
 
 		genlife(a,n);
-		printGame(n, 0);
-		exit(0);
-		int live = countlive(a,n);
 	}
 	
 	//Debug array	
@@ -97,14 +94,4 @@ int cilk_main(int argc, char **argv)
 
 }
 
-//The countlive function to be used for calculating the number of live cells.
-int countlive(int *a, unsigned int n)
-{
-	int sum = 0;
-	for(int i = 0; i < n*n; i++)
-	{
-		sum += a[i];	
-	}	
 
-	return sum;
-}
