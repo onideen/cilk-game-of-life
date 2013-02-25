@@ -1,7 +1,7 @@
 /*
 Homework 5 : The Game of Life.
-Team member 1 : John Doe 
-Team member 2 : Jane Doe
+Team member 1 : Vegar Engen 
+Team member 2 : Arne Bjune
 */
 
 // Function declarations file
@@ -60,11 +60,12 @@ int cilk_main(int argc, char **argv)
 		genlife(a,n,5);
 	}
 	
-	//Debug array	
-	livecount = (int *)malloc(sizeof(int)*n);
-
+	
 	//Initialize livecount array	
 	#if DEBUG == 1
+		//Debug array	
+		livecount = (int *)malloc(sizeof(int)*10);
+
 		for(int i = 0; i < 10; i++)
 			livecount[i] = 0;
 	#endif

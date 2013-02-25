@@ -10,6 +10,7 @@ Team member 2 : Arne Bjune
 unsigned int size;
 int *array;
 int *array2;
+int firstY, firstX, lastX, lastY;
 
 
 
@@ -201,11 +202,27 @@ int countNeighbours(int x, int y, int age){
 
 //Do one iteration
 void Calculate_next_life(int *a, unsigned int k) {
-	printGame(size,(k)%2);
-	printf("\n");
-	cilk_for (int y = 0; y < size; ++y)	{
-		cilk_for (int x = 0; x < size; ++x){
+	//printGame(size,(k)%2);
+	//printf("\n");
+
+	cilk_for (int y = firstY-1; y <= lastY+1; ++y)	{
+		if(k == 0) {			
+			firstY = size-1;
+			lastY = 0;
+		}
+
+		for (int x = firstX-1; x <= lastX+1; ++x){
 			unsigned int neighbours = countNeighbours(x,y,k%2);
+			if (k == 0 && y == 0) {
+				firstX = size-1;
+				lastX = 0;
+			}
+			if (neighbours > 0) {
+				if (x < firstX) firstX = x;
+				if (y < firstY) firstY = y;
+				if (x > lastX) lastX = x;
+				if (y > lastY) lastY = y;
+			}
 
 			if(neighbours > 3){
 				setElement(x,y,(k+1)%2,0);
@@ -217,6 +234,13 @@ void Calculate_next_life(int *a, unsigned int k) {
 				setElement(x,y,(k+1)%2,getElement(x,y,k%2));
 			}
 		}
+
+		if (firstX == 0) firstX = 1;
+		if (firstY == 0) firstY = 1;
+		if (lastX == size-1) lastX = size-2;
+		if (lastY == size-1) lastY = size-2;
+
+		
 	}	
 
 }
@@ -232,8 +256,11 @@ void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 	array2 = (int *)malloc(sizeof(int)*n*n);
 	size = n;
 	array = a;
-
-
+	firstY = 1;
+	firstX =1;
+	lastX = size-2; 
+	lastY = size-2;
+		
 
 	for (int current_it = 1; current_it <= iter; ++current_it){
 		Calculate_next_life(a,current_it-1);
