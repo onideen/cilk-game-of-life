@@ -127,6 +127,8 @@ void Calculate_next_life(int *a, unsigned int k) {
 	cilk_for (int y = 0; y < size; ++y)	{
 		cilk_for (int x = 0; x < size; ++x){
 			unsigned int neighbours = countNeighbours(x,y,k%2);
+	//printGame(size,(k)%2);
+	//printf("\n");
 
 			if(neighbours > 3){
 				setElement(x,y,(k+1)%2,0);
@@ -138,10 +140,8 @@ void Calculate_next_life(int *a, unsigned int k) {
 				setElement(x,y,(k+1)%2,getElement(x,y,k%2));
 			}
 		}
-	}
+	}	
 
-	printf("\n");
-	printGame(size,(k+1)%2);
 }
 
 
@@ -156,22 +156,23 @@ void life(int *a, unsigned int n, unsigned int iter, int* livecount){
 	size = n;
 	array = a;
 
-	printGame(n,0);
 
 
-	for (int current_it = 0; current_it < iter; ++current_it){
-		Calculate_next_life(a,current_it);
+	for (int current_it = 1; current_it <= iter; ++current_it){
+		Calculate_next_life(a,current_it-1);
 
 		#if DEBUG == 1
 			if(iter%10 == 0) {
 				if(current_it%(iter/10) == 0) {
-					printf("HERE\n");
+					int *a = current_it%2 == 0 ? array : array2;
 					int total_lives = countlive(a, n);
-					
-					livecount[current_it/(iter/10)] = total_lives;
+					livecount[(current_it/(iter/10)) -1] = total_lives;
 				}
 			}
 		#endif
 	}
+	
+//	printGame(n,iter%2);
+
 }
 

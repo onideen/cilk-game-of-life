@@ -71,7 +71,17 @@ int cilk_main(int argc, char **argv)
 			livecount[i] = 0;
 	#endif
 
+	#if DEBUG == 0
+		struct timeval tvi, tvf; 
+		gettimeofday(&tvi, NULL);
+	#endif
+
 	life(a,n,iter,livecount);
+
+	#if DEBUG == 0
+		gettimeofday(&tvf, NULL);
+		printf("%lf\n", (double)((tvf.tv_usec - tvi.tv_usec)/1000.0 + (tvf.tv_sec - tvi.tv_sec)*1000.0 ));
+	#endif	
 
 	// Print the livecount array 
 	#if DEBUG == 1
