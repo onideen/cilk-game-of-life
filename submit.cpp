@@ -78,8 +78,10 @@ void printGame(unsigned int n, int age){
 }
 
 void genlife(int *a, unsigned int n) {
+	size = n;
 	array = a;
 	srand(time(NULL));
+	
 	cilk_for (int y = 0; y < n; y++)
 	{
 		cilk_for (int x = 0; x < n; x++)
@@ -87,7 +89,6 @@ void genlife(int *a, unsigned int n) {
 			setElement(x,y,0,rand()%2);
 		}
 	}
-	exit(0);
 }
 
 //Read the life matrix from stdin

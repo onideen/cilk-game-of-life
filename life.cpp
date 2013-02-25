@@ -57,7 +57,8 @@ int cilk_main(int argc, char **argv)
 		}
 
 		genlife(a,n);
-
+		printGame(n, 0);
+		exit(0);
 		int live = countlive(a,n);
 	}
 	
