@@ -92,17 +92,79 @@ void printGame(unsigned int n, int age){
 	}
 }
 
-void genlife(int *a, unsigned int n) {
+void genlife(int *a, unsigned int n, int whichstart) {
+	int startX = floor(n/3);
+	int startY = floor(n/5);
 	size = n;
 	array = a;
-	srand(time(NULL));
 	
-	cilk_for (int y = 0; y < n; y++)
-	{
-		cilk_for (int x = 0; x < n; x++)
-		{
-			setElement(x,y,0,rand()%2);
-		}
+	memset(array, 0, n*n);
+	switch (whichstart) {
+		case 0:
+			break;
+
+		case 1:
+			{
+				// An interesting cell
+				int cell[25] = {1,1,1,0,1, 1,0,0,0,0, 0,0,0,1,1, 0,1,1,0,1, 1,0,1,0,1};
+
+				for (int y = 0; y < 5; y++){
+					for (int x = 0; x < 5; x++) {
+						setElement(x+startX, y+startY, 0, cell[y*5+x]);
+					}
+				}
+			}
+			break;
+
+		case 2:
+			{
+				// Glider
+				int glider[9] = {1,1,1, 1,0,0, 0,1,0};
+
+				for (int y = 0; y < 3; y++){
+					for (int x = 0; x < 3; x++) {
+						setElement(x+startX, y+startY, 0, glider[y*3+x]);
+					}
+				}
+				break;
+			}
+		case 3:
+			{
+				// Lightweight spaceship
+				int blinker[25] = {0,0,0,0,0, 0,1,0,0,1, 1,0,0,0,0, 1,0,0,0,0, 1,1,1,1,0};
+
+				for (int y = 0; y < 5; y++){
+					for (int x = 0; x < 5; x++) {
+						setElement(x+startX, y+startY, 0, blinker[y*5+x]);
+					}
+				}
+				break;
+			}
+		case 4:
+			{
+				// Blinker
+				int blinker[9] = {0,0,0, 1,1,1, 0,0,0};
+
+				for (int y = 0; y < 3; y++){
+					for (int x = 0; x < 3; x++) {
+						setElement(x+startX, y+startY, 0, blinker[y*3+x]);
+					}
+				}
+				break;
+			}
+		case 5:
+			{
+				// Toad
+				int toad[16] = {0,0,1,0, 1,0,0,1, 1,0,0,1, 0,1,0,0};
+
+				for (int y = 0; y < 4; y++){
+					for (int x = 0; x < 4; x++) {
+						setElement(x+startX, y+startY, 0, toad[y*4+x]);
+					}
+				}
+				break;
+			}
+
 	}
 }
 
@@ -139,11 +201,11 @@ int countNeighbours(int x, int y, int age){
 
 //Do one iteration
 void Calculate_next_life(int *a, unsigned int k) {
+	printGame(size,(k)%2);
+	printf("\n");
 	cilk_for (int y = 0; y < size; ++y)	{
 		cilk_for (int x = 0; x < size; ++x){
 			unsigned int neighbours = countNeighbours(x,y,k%2);
-	//printGame(size,(k)%2);
-	//printf("\n");
 
 			if(neighbours > 3){
 				setElement(x,y,(k+1)%2,0);

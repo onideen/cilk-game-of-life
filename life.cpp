@@ -50,13 +50,14 @@ int cilk_main(int argc, char **argv)
 		n = (unsigned int)atoi(argv[1]);
 		iter = (unsigned int)atoi(argv[2]);
 		a = (int *)malloc(sizeof(int)*(n*n));
+		memset(a,0,sizeof(int)*n*n);
 
 		if(a == NULL) {
 			printf("Malloc failed .. Exiting\n");
 			exit(-1);
 		}
 
-		genlife(a,n);
+		genlife(a,n,5);
 	}
 	
 	//Debug array	
