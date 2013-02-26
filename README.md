@@ -56,3 +56,4 @@ Problems
 
 We wasted a lot of time we could have used on optimalizing how to split the matrix between the CPUs, to doing bitwise operations.
 
+Right before our deadline we realised malloc is limmited to 2^32 byte memory and that is why our maximum n is about 65500. So what we should have done was divide the game into 8 parts and have each proccessor allocate its own 6GB of memory (6*8=48GB, one Triton node).
